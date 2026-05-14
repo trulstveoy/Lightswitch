@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LightSwitch — UI Mockup</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f3ee;
+      color: #1a1a1a;
+      padding: 2rem;
+    }
+
+    h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+    .meta { font-size: 13px; color: #888; margin-bottom: 2.5rem; }
+
+    /* ── Layout ── */
+    .scene {
+      display: flex;
+      gap: 56px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .label {
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* ── Wall / Popup ── */
+    .wall {
+      width: 160px;
+      height: 200px;
+      border-radius: 6px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #999;
+      cursor: pointer;
+      transition: background 0.4s;
+    }
+    .wall.on  { background: #e8dfc0; }
+    .wall.off { background: #5a5650; }
+
+    .plate {
+      width: 78px;
+      height: 130px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .plate.on  { background: #f7f2e2; border: 1px solid #ccc4a0; }
+    .plate.off { background: #2e2c28; border: 1px solid #1a1916; }
+
+    .screw {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      position: relative;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .screw.on  { background: #c0b898; border: 0.5px solid #9a9080; }
+    .screw.off { background: #3a3830; border: 0.5px solid #222018; }
+    .screw::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 6px; height: 0.5px;
+    }
+    .screw.on::after  { background: #8a8270; }
+    .screw.off::after { background: #111008; }
+
+    .toggle-track {
+      width: 34px;
+      height: 68px;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .toggle-track.on  { background: #e0d8c0; border: 1px solid #bbb090; }
+    .toggle-track.off { background: #1a1916; border: 1px solid #0a0a08; }
+
+    .toggle-arm {
+      width: 28px;
+      height: 30px;
+      border-radius: 3px;
+      position: absolute;
+      left: 2px;
+      transition: top 0.18s cubic-bezier(.4,2,.6,1), background 0.3s, border-color 0.3s;
+    }
+    .toggle-arm.on  { top: 2px;  background: #fff8e8; border: 1px solid #d0c8a8; }
+    .toggle-arm.off { top: 34px; background: #222018; border: 1px solid #0e0d0a; }
+
+    .arm-grip {
+      display: block;
+      width: 14px; height: 3px;
+      border-radius: 2px;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      transition: background 0.3s;
+    }
+    .toggle-arm.on  .arm-grip { background: #b8b098; }
+    .toggle-arm.off .arm-grip { background: #3a3830; }
+
+    /* ── Tray icons ── */
+    .tray-row { display: flex; gap: 24px; align-items: flex-end; justify-content: center; }
+    .tray-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+    .tray-icon {
+      width: 44px; height: 44px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .switch-mini { width: 18px; height: 28px; }
+
+    /* ── Context menu ── */
+    .ctx-menu {
+      background: #ffffff;
+      border: 0.5px solid #ccc;
+      border-radius: 8px;
+      width: 180px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+    .ctx-item {
+      padding: 7px 14px;
+      font-size: 13px;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: default;
+    }
+    .ctx-item:hover { background: #f5f5f5; }
+    .ctx-divider { height: 0.5px; background: #e0e0e0; margin: 3px 0; }
+    .ctx-muted { color: #999; font-size: 11px; padding-top: 4px; padding-bottom: 2px; }
+    .ctx-active { font-weight: 500; color: #1d7a3f; }
+
+    /* ── Spec table ── */
+    .spec-section { margin-top: 1.5rem; }
+    .spec-section h2 { font-size: 15px; font-weight: 500; margin-bottom: 1rem; padding-bottom: 6px; border-bottom: 1px solid #ddd; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    td { padding: 7px 10px; vertical-align: top; border-bottom: 1px solid #eee; }
+    td:first-child { font-weight: 500; width: 200px; color: #555; white-space: nowrap; }
+    td:last-child { color: #333; }
+    tr:last-child td { border-bottom: none; }
+
+    .swatch {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 0.5px solid rgba(0,0,0,0.15);
+    }
+
+    .note {
+      font-size: 12px;
+      color: #777;
+      background: #fffbe6;
+      border-left: 3px solid #f0c040;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>LightSwitch — UI Mockup</h1>
+  <p class="meta">Visuelt designforslag · Litra Glow tray-app · Klikk på veggen for å toggle</p>
+
+  <div class="scene">
+
+    <!-- Popup -->
+    <div>
+      <p class="section-title">popup (venstreklikk på tray)</p>
+      <div class="wall on" id="wall" onclick="toggle()" title="Klikk for å toggle">
+        <div class="plate on" id="plate">
+          <div class="screw on" id="screw-t"></div>
+          <div class="toggle-track on" id="track">
+            <div class="toggle-arm on" id="arm">
+              <span class="arm-grip"></span>
+            </div>
+          </div>
+          <div class="screw on" id="screw-b"></div>
+        </div>
+      </div>
+      <p class="label" id="wall-label">på — klikk for å toggle</p>
+    </div>
+
+    <!-- Tray ikoner -->
+    <div>
+      <p class="section-title">tray-ikon (to tilstander)</p>
+      <div class="tray-row">
+        <div class="tray-item">
+          <div class="tray-icon">
+            <svg class="switch-mini" viewBox="0 0 18 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="0" width="16" height="28" rx="3" fill="#3a3830" stroke="#555040" stroke-width="0.6"/>
+              <rect x="2.5" y="1.5" width="13" height="13" rx="2" fill="#fff8e8" stroke="#c0b890" stroke-width="0.5"/>
+              <rect x="6" y="7" width="6" height="2" rx="1" fill="#b8b098"/>
+            </svg>
+          </div>
+          <p class="label">på</p>
+        </div>
+        <div class="tray-item">
+          <div class="tray-icon">
+            <svg class="switch-mini" viewBox="0 0 18 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="0" width="16" height="28" rx="3" fill="#3a3830" stroke="#555040" stroke-width="0.6"/>
+              <rect x="2.5" y="13.5" width="13" height="13" rx="2" fill="#222018" stroke="#111008" stroke-width="0.5"/>
+              <rect x="6" y="19" width="6" height="2" rx="1" fill="#3a3830"/>
+            </svg>
+          </div>
+          <p class="label">av</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Høyreklikkmeny -->
+    <div>
+      <p class="section-title">høyreklikkmeny</p>
+      <div class="ctx-menu">
+        <div class="ctx-item ctx-active">
+          <i class="ti ti-toggle-right" style="font-size:15px;"></i> skru av
+        </div>
+        <div class="ctx-divider"></div>
+        <div class="ctx-item ctx-muted">
+          <i class="ti ti-sun" style="font-size:13px;"></i> lysstyrke
+        </div>
+        <div class="ctx-item"><span style="margin-left:4px; color:#888; font-size:13px;">25%</span></div>
+        <div class="ctx-item"><span style="margin-left:4px; color:#888; font-size:13px;">50%</span></div>
+        <div class="ctx-item" style="background:#f5f5f5;">
+          <span style="margin-left:4px; font-size:13px;">75%</span>
+          <span style="margin-left:auto; font-size:11px; color:#888;">aktiv</span>
+        </div>
+        <div class="ctx-item"><span style="margin-left:4px; color:#888; font-size:13px;">100%</span></div>
+        <div class="ctx-divider"></div>
+        <div class="ctx-item"><i class="ti ti-settings" style="font-size:14px; color:#888;"></i> innstillinger</div>
+        <div class="ctx-item" style="color:#888;"><i class="ti ti-power" style="font-size:14px;"></i> avslutt</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Design specs -->
+  <div class="spec-section">
+    <h2>Farger og stemning</h2>
+    <table>
+      <tr>
+        <td>Vegg — på</td>
+        <td><span class="swatch" style="background:#e8dfc0;"></span>#e8dfc0 — varm, gulnet beige</td>
+      </tr>
+      <tr>
+        <td>Vegg — av</td>
+        <td><span class="swatch" style="background:#5a5650;"></span>#5a5650 — mørk koksgrå</td>
+      </tr>
+      <tr>
+        <td>Bryterplate — på</td>
+        <td><span class="swatch" style="background:#f7f2e2;"></span>#f7f2e2 — lys bakelit/krem</td>
+      </tr>
+      <tr>
+        <td>Bryterplate — av</td>
+        <td><span class="swatch" style="background:#2e2c28;"></span>#2e2c28 — nesten svart</td>
+      </tr>
+      <tr>
+        <td>Toggle-arm — på</td>
+        <td><span class="swatch" style="background:#fff8e8;"></span>#fff8e8 — varm hvit</td>
+      </tr>
+      <tr>
+        <td>Toggle-arm — av</td>
+        <td><span class="swatch" style="background:#222018;"></span>#222018 — kull/svart</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="spec-section">
+    <h2>Mål og dimensjoner</h2>
+    <table>
+      <tr><td>Popup-vindu</td><td>160 × 200 px (visuell størrelse — tilpass til WinUI flyout)</td></tr>
+      <tr><td>Bryterplate</td><td>78 × 130 px</td></tr>
+      <tr><td>Toggle-track</td><td>34 × 68 px</td></tr>
+      <tr><td>Toggle-arm</td><td>28 × 30 px, reiser 32 px vertikalt</td></tr>
+      <tr><td>Tray-ikon</td><td>44 × 44 px boks, 18 × 28 px bryterikon inne</td></tr>
+    </table>
+  </div>
+
+  <div class="spec-section">
+    <h2>Animasjon og interaksjon</h2>
+    <table>
+      <tr><td>Toggle-animasjon</td><td>cubic-bezier(.4, 2, .6, 1) — liten fysisk «bounce» ved endestopp</td></tr>
+      <tr><td>Fargeovergang</td><td>0.3–0.4s ease på vegg, plate og arm</td></tr>
+      <tr><td>Klikk-lyd</td><td>Kort mekanisk klikk-lyd ved toggle (WAV/MP3 embeddes i app)</td></tr>
+      <tr><td>Vindu-oppførsel</td><td>Flyout over tray-ikonet, lukkes ved klikk utenfor</td></tr>
+      <tr><td>Én instans</td><td>Mutex-sjekk ved oppstart</td></tr>
+    </table>
+  </div>
+
+  <div class="spec-section">
+    <h2>Ekstra funksjonalitet (sekundær — ikke i MVP)</h2>
+    <table>
+      <tr><td>Lysstyrke</td><td>Slider i innstillinger-panel, 10–100%, hurtigvalg i tray-meny</td></tr>
+      <tr><td>Fargetemperatur</td><td>Slider i innstillinger-panel, 2700K–6500K</td></tr>
+      <tr><td>Innstillinger-vindu</td><td>Start med Windows-toggle, tilbakestill til standard</td></tr>
+    </table>
+  </div>
+
+  <p class="note">
+    <strong>Merk til utvikler:</strong> Popup-vinduet skal ikke ha standard Windows tittelbar — bruk et borderless/custom chrome WinUI-vindu. Bryterplaten og veggen er rene fargede rektangler med border-radius; ingen bilder eller teksturer er nødvendig.
+  </p>
+
+  <script>
+    let on = true;
+    function toggle() {
+      on = !on;
+      const s = on ? 'on' : 'off';
+      document.getElementById('wall').className   = 'wall '         + s;
+      document.getElementById('plate').className  = 'plate '        + s;
+      document.getElementById('track').className  = 'toggle-track ' + s;
+      document.getElementById('arm').className    = 'toggle-arm '   + s;
+      document.getElementById('screw-t').className = 'screw '       + s;
+      document.getElementById('screw-b').className = 'screw '       + s;
+      document.getElementById('wall-label').textContent = (on ? 'på' : 'av') + ' — klikk for å toggle';
+    }
+  </script>
+
+</body>
+</html>

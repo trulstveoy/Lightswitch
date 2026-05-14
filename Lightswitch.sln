@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D6454DD9-59BC-4106-9FB4-A0245BDF6509}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lightswitch.App", "src\Lightswitch.App\Lightswitch.App.csproj", "{6F502124-5A9C-4185-80E4-FA1820146649}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lightswitch.Core", "src\Lightswitch.Core\Lightswitch.Core.csproj", "{DA61D20F-1463-4546-8CC0-B28B7C5741DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lightswitch.Device", "src\Lightswitch.Device\Lightswitch.Device.csproj", "{22C6623B-2E8F-47A6-A5B5-D1DE87BB412D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E6C9B25B-4319-47C2-B7F0-BB72BA3070BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lightswitch.Core.Tests", "tests\Lightswitch.Core.Tests\Lightswitch.Core.Tests.csproj", "{238FAC46-4E1A-4F37-B795-0FF9CD6CB946}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lightswitch.Device.Tests", "tests\Lightswitch.Device.Tests\Lightswitch.Device.Tests.csproj", "{5B4DFAE1-A54F-4287-BD1A-4797C3D1733E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F502124-5A9C-4185-80E4-FA1820146649}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{6F502124-5A9C-4185-80E4-FA1820146649}.Debug|Any CPU.Build.0 = Debug|x86
+		{6F502124-5A9C-4185-80E4-FA1820146649}.Release|Any CPU.ActiveCfg = Release|x86
+		{6F502124-5A9C-4185-80E4-FA1820146649}.Release|Any CPU.Build.0 = Release|x86
+		{DA61D20F-1463-4546-8CC0-B28B7C5741DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA61D20F-1463-4546-8CC0-B28B7C5741DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA61D20F-1463-4546-8CC0-B28B7C5741DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA61D20F-1463-4546-8CC0-B28B7C5741DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22C6623B-2E8F-47A6-A5B5-D1DE87BB412D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22C6623B-2E8F-47A6-A5B5-D1DE87BB412D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22C6623B-2E8F-47A6-A5B5-D1DE87BB412D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22C6623B-2E8F-47A6-A5B5-D1DE87BB412D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{238FAC46-4E1A-4F37-B795-0FF9CD6CB946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{238FAC46-4E1A-4F37-B795-0FF9CD6CB946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{238FAC46-4E1A-4F37-B795-0FF9CD6CB946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{238FAC46-4E1A-4F37-B795-0FF9CD6CB946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B4DFAE1-A54F-4287-BD1A-4797C3D1733E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B4DFAE1-A54F-4287-BD1A-4797C3D1733E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B4DFAE1-A54F-4287-BD1A-4797C3D1733E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B4DFAE1-A54F-4287-BD1A-4797C3D1733E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6F502124-5A9C-4185-80E4-FA1820146649} = {D6454DD9-59BC-4106-9FB4-A0245BDF6509}
+		{DA61D20F-1463-4546-8CC0-B28B7C5741DA} = {D6454DD9-59BC-4106-9FB4-A0245BDF6509}
+		{22C6623B-2E8F-47A6-A5B5-D1DE87BB412D} = {D6454DD9-59BC-4106-9FB4-A0245BDF6509}
+		{238FAC46-4E1A-4F37-B795-0FF9CD6CB946} = {E6C9B25B-4319-47C2-B7F0-BB72BA3070BE}
+		{5B4DFAE1-A54F-4287-BD1A-4797C3D1733E} = {E6C9B25B-4319-47C2-B7F0-BB72BA3070BE}
+	EndGlobalSection
+EndGlobal

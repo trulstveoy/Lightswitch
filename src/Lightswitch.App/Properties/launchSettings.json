@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Lightswitch.App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Lightswitch.App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
