@@ -7,30 +7,33 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Width="160" Height="200" Background="Transparent">
+    <Grid
+        x:Name="Root"
+        Width="160"
+        Height="200">
         <Border
             x:Name="Wall"
             Width="160"
-            Height="200"
-            BorderBrush="#99000000"
-            BorderThickness="1"
-            CornerRadius="6">
-            <Border.Shadow>
-                <ThemeShadow />
-            </Border.Shadow>
-
+            Height="200">
             <Grid>
                 <Border
                     x:Name="Plate"
                     Width="78"
                     Height="130"
                     Margin="41,35"
-                    BorderThickness="1"
-                    CornerRadius="6"
+                    Background="Transparent"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Tapped="Switch_Tapped">
                     <Grid>
+                        <Border
+                            x:Name="PlateFill"
+                            Margin="-1"
+                            CornerRadius="7" />
+                        <Border
+                            x:Name="PlateBorder"
+                            BorderThickness="1"
+                            CornerRadius="6" />
                         <Grid
                             x:Name="ScrewTop"
                             Width="9"

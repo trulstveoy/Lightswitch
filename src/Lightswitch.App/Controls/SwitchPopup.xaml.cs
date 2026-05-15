@@ -59,9 +59,10 @@ public sealed partial class SwitchPopup : UserControl
     {
         var isOn = _viewModel?.IsOn ?? true;
 
-        Wall.Background = Brush(isOn ? "#E8DFC0" : "#5A5650");
-        Plate.Background = Brush(isOn ? "#F7F2E2" : "#2E2C28");
-        Plate.BorderBrush = Brush(isOn ? "#CCC4A0" : "#1A1916");
+        Root.Background = Brush(isOn ? "#E8DFC0" : "#5A5650");
+        Wall.Background = Root.Background;
+        PlateFill.Background = Brush(isOn ? "#F7F2E2" : "#2E2C28");
+        PlateBorder.BorderBrush = Brush(isOn ? "#CCC4A0" : "#1A1916");
         Track.Background = Brush(isOn ? "#E0D8C0" : "#1A1916");
         Track.BorderBrush = Brush(isOn ? "#BBB090" : "#0A0A08");
         Arm.Background = Brush(isOn ? "#FFF8E8" : "#222018");
