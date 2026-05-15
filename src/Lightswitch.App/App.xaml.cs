@@ -32,6 +32,7 @@ public partial class App : Application
 
         _window = new MainWindow(viewModel);
         _window.Activate();
+        _window.HideToTray();
 
         _ = viewModel.InitializeAsync();
     }

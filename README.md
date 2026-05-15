@@ -41,6 +41,8 @@ dotnet test .\tests\Lightswitch.Core.Tests\Lightswitch.Core.Tests.csproj -c Debu
 
 ## Current State
 
+The app runs tray-first with a switch-style popup inspired by the physical light switch mockup. The settings window remains available from the tray context menu.
+
 The app scaffold is in place with UI, tray menu, settings persistence, startup registration, single-instance guard, and a `LitraService` boundary.
 
 Real Logitech Litra Glow HID control is not complete yet. The exact device product ID and HID report format still need to be verified against hardware or reliable protocol notes.

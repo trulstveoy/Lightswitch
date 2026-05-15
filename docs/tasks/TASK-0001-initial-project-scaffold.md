@@ -1,7 +1,7 @@
 # Task: Initial Project Scaffold
 
 ID: TASK-0001
-Status: Ready For Review
+Status: Done
 Class: Major
 Owner: Agent
 Created: 2026-05-14
@@ -25,7 +25,7 @@ Create the initial documentation and project scaffold for Lightswitch, a WinUI 3
 
 ## Current Phase
 
-Ready For Review
+Close
 
 ## Progress Checklist
 
@@ -38,7 +38,7 @@ Ready For Review
 - [x] Verification complete
 - [x] Review complete
 - [x] Documentation complete
-- [ ] Closeout complete
+- [x] Closeout complete
 
 ## Links
 
@@ -178,6 +178,36 @@ Decision record needed:
 - Done: `docs/decisions/0001-initial-architecture.md`
 
 ## Closeout
+
+Changed:
+
+- Created the initial WinUI/Core/Device/test solution.
+- Added product, architecture, decision, workflow, README, and task documentation.
+- Added tray app shell, settings persistence, startup registration, single-instance guard, and HID service boundary.
+
+Verified:
+
+- `dotnet build .\Lightswitch.sln -c Debug`
+- `dotnet restore .\src\Lightswitch.App\Lightswitch.App.csproj -p:Platform=x64`
+- `dotnet build .\src\Lightswitch.App\Lightswitch.App.csproj -c Debug -p:Platform=x64 --no-restore`
+- `dotnet test .\tests\Lightswitch.Core.Tests\Lightswitch.Core.Tests.csproj -c Debug`
+
+Known gaps:
+
+- Brightness and color temperature HID reports remain future work.
+- Power-on was completed later in `TASK-0002`.
+
+Next:
+
+- Create follow-up tasks for brightness and color temperature.
+
+Final status:
+
+Done.
+
+Review handoff retained below for reference.
+
+---
 
 Ready for human review.
 

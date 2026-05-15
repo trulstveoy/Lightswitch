@@ -29,33 +29,30 @@
 
         <tb:TaskbarIcon
             x:Name="TrayIcon"
+            DataContext="{x:Bind ViewModel}"
             Grid.RowSpan="2"
             IconSource="Assets/AppIcon.ico"
-            LeftClickCommand="{x:Bind ShowWindowCommand}"
+            LeftClickCommand="{x:Bind ShowSwitchPopupCommand}"
             MenuActivation="RightClick"
             NoLeftClickDelay="True"
             ToolTipText="Lightswitch">
             <tb:TaskbarIcon.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem Click="OpenMenuItem_Click" Text="Open" />
-                    <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Click="TogglePowerMenuItem_Click" Text="Toggle power" />
+                    <MenuFlyoutItem Click="TogglePowerMenuItem_Click" Text="Skru av/pa" />
                     <MenuFlyoutSubItem Text="Brightness">
                         <MenuFlyoutItem Click="Brightness25MenuItem_Click" Text="25%" />
                         <MenuFlyoutItem Click="Brightness50MenuItem_Click" Text="50%" />
+                        <MenuFlyoutItem Click="Brightness75MenuItem_Click" Text="75%" />
                         <MenuFlyoutItem Click="Brightness100MenuItem_Click" Text="100%" />
                     </MenuFlyoutSubItem>
-                    <MenuFlyoutSubItem Text="Color temperature">
-                        <MenuFlyoutItem Click="WarmMenuItem_Click" Text="Warm" />
-                        <MenuFlyoutItem Click="NeutralMenuItem_Click" Text="Neutral" />
-                        <MenuFlyoutItem Click="CoolMenuItem_Click" Text="Cool" />
-                    </MenuFlyoutSubItem>
+                    <MenuFlyoutSeparator />
                     <ToggleMenuFlyoutItem
                         Click="StartWithWindowsMenuItem_Click"
                         IsChecked="{Binding StartWithWindows, Mode=TwoWay}"
                         Text="Start with Windows" />
+                    <MenuFlyoutItem Click="OpenMenuItem_Click" Text="Innstillinger" />
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Click="ExitMenuItem_Click" Text="Exit" />
+                    <MenuFlyoutItem Click="ExitMenuItem_Click" Text="Avslutt" />
                 </MenuFlyout>
             </tb:TaskbarIcon.ContextFlyout>
         </tb:TaskbarIcon>
