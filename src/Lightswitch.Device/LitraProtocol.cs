@@ -1,5 +1,7 @@
 namespace Lightswitch.Device;
 
+using Lightswitch.Core;
+
 public static class LitraProtocol
 {
     public const int OutputReportLength = 20;
@@ -11,6 +13,40 @@ public static class LitraProtocol
     {
         var payload = isOn ? PowerOnPayload : PowerOffPayload;
         return BuildReport(payload, reportLength);
+    }
+
+    public static byte[] BuildBrightnessReport(int brightness, int reportLength = OutputReportLength)
+    {
+        var normalized = LightLimits.ClampBrightness(brightness);
+        var deviceBrightness = MapBrightness(normalized);
+        byte[] payload = [0x11, 0xFF, 0x04, 0x4C, 0x00, deviceBrightness];
+
+        return BuildReport(payload, reportLength);
+    }
+
+    public static byte[] BuildTemperatureReport(int temperatureKelvin, int reportLength = OutputReportLength)
+    {
+        var normalized = LightLimits.ClampTemperatureKelvin(temperatureKelvin);
+        byte[] payload =
+        [
+            0x11,
+            0xFF,
+            0x04,
+            0x9C,
+            (byte)(normalized / 256),
+            (byte)(normalized % 256)
+        ];
+
+        return BuildReport(payload, reportLength);
+    }
+
+    private static byte MapBrightness(int brightness)
+    {
+        const int deviceMin = 20;
+        const int deviceMax = 250;
+        var mapped = deviceMin + (brightness / 100.0 * (deviceMax - deviceMin));
+
+        return (byte)Math.Floor(mapped);
     }
 
     private static byte[] BuildReport(ReadOnlySpan<byte> payload, int reportLength)

@@ -61,7 +61,7 @@ public sealed class LitraService : ILitraService, IDisposable
                 return;
             }
 
-            await Task.Run(() => ApplyPowerState(_selectedDevice, DesiredState.IsOn), cancellationToken).ConfigureAwait(false);
+            await Task.Run(() => ApplyDesiredState(_selectedDevice, DesiredState), cancellationToken).ConfigureAwait(false);
             SetStatus(DeviceStatus.Connected(GetDisplayName(_selectedDevice)));
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or TimeoutException or InvalidOperationException)
@@ -127,11 +127,21 @@ public sealed class LitraService : ILitraService, IDisposable
     private static bool HasWritableLitraReport(HidDevice device) =>
         SafeReadInt(device.GetMaxOutputReportLength) >= LitraProtocol.OutputReportLength;
 
-    private static void ApplyPowerState(HidDevice device, bool isOn)
+    private static void ApplyDesiredState(HidDevice device, LightState state)
     {
-        var reportLength = Math.Max(device.GetMaxOutputReportLength(), LitraProtocol.OutputReportLength);
-        var report = LitraProtocol.BuildPowerReport(isOn, reportLength);
+        WriteReport(device, LitraProtocol.BuildPowerReport(state.IsOn, GetReportLength(device)));
 
+        if (!state.IsOn)
+        {
+            return;
+        }
+
+        WriteReport(device, LitraProtocol.BuildBrightnessReport(state.Brightness, GetReportLength(device)));
+        WriteReport(device, LitraProtocol.BuildTemperatureReport(state.TemperatureKelvin, GetReportLength(device)));
+    }
+
+    private static void WriteReport(HidDevice device, byte[] report)
+    {
         if (!device.TryOpen(out var stream))
         {
             throw new IOException("Unable to open Logitech Litra Glow HID interface.");
@@ -143,6 +153,9 @@ public sealed class LitraService : ILitraService, IDisposable
             stream.Write(report);
         }
     }
+
+    private static int GetReportLength(HidDevice device) =>
+        Math.Max(device.GetMaxOutputReportLength(), LitraProtocol.OutputReportLength);
 
     private static bool IsLikelyLitraGlow(HidDevice device)
     {

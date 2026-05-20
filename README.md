@@ -6,8 +6,10 @@ Lightswitch is a small Windows desktop utility for controlling Logitech Litra Gl
 
 - C#
 - .NET 9
-- WinUI 3 / Windows App SDK
-- H.NotifyIcon.WinUI
+- WPF rewrite trial in `src/Lightswitch.Wpf`
+- Existing WinUI 3 / Windows App SDK app in `src/Lightswitch.App`
+- `System.Windows.Forms.NotifyIcon` for the WPF tray app
+- H.NotifyIcon.WinUI for the existing WinUI app
 - HidSharp
 
 ## Build
@@ -26,6 +28,14 @@ Run from PowerShell in the repository root.
 .\run-app.ps1
 ```
 
+The run script starts the WPF rewrite trial.
+
+For an explicit WPF app build:
+
+```powershell
+dotnet build .\src\Lightswitch.Wpf\Lightswitch.Wpf.csproj -c Debug
+```
+
 For an explicit x64 WinUI app build:
 
 ```powershell
@@ -41,8 +51,8 @@ dotnet test .\tests\Lightswitch.Core.Tests\Lightswitch.Core.Tests.csproj -c Debu
 
 ## Current State
 
-The app runs tray-first with a switch-style popup inspired by the physical light switch mockup. The settings window remains available from the tray context menu.
+The active run path is a WPF rewrite trial. It runs tray-first with a switch-style popup inspired by the physical light switch mockup. The settings window remains available from the tray context menu.
 
-The app scaffold is in place with UI, tray menu, settings persistence, startup registration, single-instance guard, and a `LitraService` boundary.
+The app scaffold is in place with UI, tray menu, settings persistence, startup registration, single-instance guard, and a `LitraService` boundary. The previous WinUI implementation remains in the repository while the WPF trial is evaluated.
 
-Real Logitech Litra Glow HID control is not complete yet. The exact device product ID and HID report format still need to be verified against hardware or reliable protocol notes.
+Direct Logitech Litra Glow HID control is implemented for power, brightness, and color temperature. Physical-device verification remains the final practical check for future changes.
