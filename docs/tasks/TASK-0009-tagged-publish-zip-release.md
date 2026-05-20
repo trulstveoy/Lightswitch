@@ -1,7 +1,7 @@
 # Task: Tagged Publish Zip Release
 
 ID: TASK-0009
-Status: Ready For Review
+Status: Done
 Class: Major
 Owner: Pair
 Created: 2026-05-20
@@ -22,11 +22,11 @@ Add a lightweight release packaging path for the WPF app using `dotnet publish` 
 
 The package must be produced by GitHub only when a release tag is pushed. Normal branch pushes and ordinary builds must not publish release ZIPs.
 
-Build was approved by the human and completed. The task is ready for review and tag-based GitHub verification.
+Build was approved by the human, completed, and verified through a real GitHub tag release.
 
 ## Current Phase
 
-Ready For Review
+Close
 
 ## Progress Checklist
 
@@ -39,7 +39,7 @@ Ready For Review
 - [x] Verification complete
 - [x] Review complete
 - [x] Documentation complete
-- [ ] Closeout complete
+- [x] Closeout complete
 
 ## Links
 
@@ -210,9 +210,14 @@ Passed:
 - `.\scripts\publish-zip.ps1 -Configuration Release -Runtime win-x64 -Version local-test`
 - ZIP inspection confirmed `artifacts\Lightswitch-local-test-win-x64.zip` exists and contains `Lightswitch.Wpf.exe`.
 
-Not run:
-- Real GitHub tag-triggered release workflow.
-  Reason: requires this workflow to be committed/pushed first, then a release tag pushed to GitHub.
+GitHub release verification:
+- Commit `87ed6a8` was pushed to `origin/main`.
+- Tag `v0.1.0` was pushed to GitHub.
+- GitHub Actions run `26157074700` completed successfully.
+- GitHub Release `v0.1.0` was created.
+- Release asset `Lightswitch-v0.1.0-win-x64.zip` was uploaded.
+- Asset size: 68,482,974 bytes.
+- Asset digest: `sha256:606821e8fab600a3b769ada6bf463bd337371c63ee53641fb3ef3f8b2ca60f5b`.
 
 ## Review Notes
 
@@ -223,7 +228,7 @@ Scope respected:
 - Yes. No installer, MSIX, MSI, ClickOnce, signing, app code, or auto-update behavior was added.
 
 Risks remaining:
-- GitHub Release creation must be verified on GitHub after pushing a real tag.
+- GitHub Actions emitted notices that Node.js 20 actions are deprecated and that `windows-latest` will redirect to newer Windows runner images. Current release succeeded, but action versions may need future maintenance.
 - The release workflow depends on GitHub-hosted `windows-latest` having the requested .NET SDK available through `actions/setup-dotnet`.
 
 Security concerns:
@@ -241,4 +246,22 @@ Broader docs:
 
 ## Closeout
 
-Not closed.
+Changed:
+- Added local ZIP packaging through `scripts/publish-zip.ps1`.
+- Added tag-triggered GitHub release workflow.
+- Documented local packaging and release tagging in `README.md`.
+- Ignored local `artifacts/` output.
+
+Verified:
+- Release build and tests passed locally.
+- Local publish ZIP was created and inspected.
+- Pushed tag `v0.1.0` triggered GitHub Actions successfully.
+- GitHub Release `v0.1.0` contains `Lightswitch-v0.1.0-win-x64.zip`.
+
+Known gaps:
+- Package is unsigned.
+- This is a ZIP distribution, not an installer.
+- Future GitHub Actions maintenance may be needed for Node.js 24 action runtime changes.
+
+Final status:
+- Done.
