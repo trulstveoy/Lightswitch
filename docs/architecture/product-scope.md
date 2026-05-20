@@ -1,7 +1,7 @@
 # Product Scope: Lightswitch
 
 Status: Draft
-Updated: 2026-05-14
+Updated: 2026-05-20
 
 ## Summary
 
@@ -27,7 +27,7 @@ The app should run quietly in the background, expose fast tray controls, and avo
 ## Target Platform
 
 - Windows 11 desktop.
-- Windows App SDK / WinUI 3.
+- WPF desktop app on Windows 11.
 - .NET 9 initially, unless a later compatibility issue requires .NET 8.
 
 ## Core Features

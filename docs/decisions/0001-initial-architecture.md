@@ -2,7 +2,9 @@
 
 ## Status
 
-Accepted
+Superseded by `0002-adopt-wpf-app-surface.md` for the UI stack.
+
+The core/device separation remains accepted.
 
 ## Context
 

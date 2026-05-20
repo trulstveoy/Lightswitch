@@ -20,10 +20,8 @@ Detaljerte produktkrav, arkitekturkrav, beslutninger og arbeidsnotater skal ligg
 
 - C#
 - .NET 8 eller .NET 9
-- WPF rewrite trial under `src/Lightswitch.Wpf`
-- Existing WinUI 3 app under `src/Lightswitch.App`
+- WPF app under `src/Lightswitch.Wpf`
 - `System.Windows.Forms.NotifyIcon` for WPF tray icon
-- H.NotifyIcon.WinUI for existing WinUI tray icon
 - HidSharp for direkte USB HID-kommunikasjon
 
 ## Lokalt Miljø

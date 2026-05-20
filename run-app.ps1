@@ -3,7 +3,6 @@ $ErrorActionPreference = "Stop"
 $repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $project = Join-Path $repoRoot "src\Lightswitch.Wpf\Lightswitch.Wpf.csproj"
 
-Get-Process -Name "Lightswitch.App" -ErrorAction SilentlyContinue | Stop-Process -Force
 Get-Process -Name "Lightswitch.Wpf" -ErrorAction SilentlyContinue | Stop-Process -Force
 
 dotnet restore $project

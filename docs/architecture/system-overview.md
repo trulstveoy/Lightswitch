@@ -1,21 +1,22 @@
 # System Overview: Lightswitch
 
 Status: Draft
-Updated: 2026-05-14
+Updated: 2026-05-20
 
 ## Summary
 
-Lightswitch is structured as a small WinUI 3 desktop app with device control behind service boundaries. UI, tray lifecycle, persisted settings, startup registration, and HID communication should remain independently testable where practical.
+Lightswitch is structured as a small WPF tray utility with device control behind service boundaries. UI, tray lifecycle, persisted settings, startup registration, and HID communication should remain independently testable where practical.
 
-## Initial Project Layout
+## Project Layout
 
 ```text
 src/
-  Lightswitch.App/
+  Lightswitch.Wpf/
   Lightswitch.Core/
   Lightswitch.Device/
 tests/
   Lightswitch.Core.Tests/
+  Lightswitch.Device.Tests/
 docs/
   architecture/
   decisions/
@@ -25,16 +26,17 @@ docs/
 
 ## Components
 
-### Lightswitch.App
+### Lightswitch.Wpf
 
 Responsibilities:
 
-- WinUI 3 application shell.
-- Main control window.
-- Tray icon and context menu through `H.NotifyIcon.WinUI`.
+- WPF application startup and lifecycle.
+- Tray icon and context menu through `System.Windows.Forms.NotifyIcon`.
+- Chromeless switch popup window.
+- Basic settings window.
 - Single-instance startup guard.
-- App lifecycle and dependency wiring.
 - User-facing startup-with-Windows toggle.
+- Dependency wiring between UI, settings, and device services.
 
 This project should not build HID reports directly.
 
@@ -48,7 +50,7 @@ Responsibilities:
 - Service interfaces for device control and persisted settings.
 - Validation helpers for brightness and color temperature ranges.
 
-This project should not depend on WinUI, Windows App SDK, HidSharp, or tray packages.
+This project should not depend on WPF, Windows Forms, HidSharp, or tray APIs.
 
 ### Lightswitch.Device
 
@@ -57,7 +59,7 @@ Responsibilities:
 - `LitraService` implementation.
 - USB HID discovery and communication through HidSharp.
 - Device connection state.
-- Disconnect/reconnect polling or watching.
+- Disconnect/reconnect handling.
 - Translation from domain state to Logitech Litra Glow HID reports.
 
 This project should not contain UI logic.
@@ -68,13 +70,12 @@ Responsibilities:
 
 - Unit tests for non-UI logic.
 - Validation behavior.
-- Settings serialization where useful.
-- Device protocol report construction once the protocol is verified.
+- Device protocol report construction.
 
 ## Data Flow
 
 ```text
-WinUI controls / tray menu
+WPF controls / tray menu
   -> view model or app service boundary
   -> Lightswitch.Core contracts
   -> Lightswitch.Device LitraService
@@ -102,16 +103,16 @@ UI / app lifecycle
 Initial reconnect behavior should be simple and robust:
 
 - discover the device at startup;
-- retry discovery on a timer when disconnected;
-- mark state as disconnected when HID operations fail because the device disappeared;
-- apply the last desired state after reconnect;
+- refresh device state when the HID device list changes;
+- mark state as disconnected when the device cannot be found;
+- mark state as error when HID operations fail;
 - keep UI responsive during all device operations.
 
 ## Persistence Strategy
 
-Persist settings as JSON under the user's local application data directory unless a later packaging decision makes another Windows storage API preferable.
+Persist settings as JSON under the user's local application data directory.
 
-Settings should include:
+Settings include:
 
 - power state
 - brightness
@@ -120,16 +121,14 @@ Settings should include:
 
 ## Startup With Windows
 
-Initial implementation should use an explicit Windows startup registration mechanism appropriate for the chosen packaging model. The UI must expose the current startup preference and allow changing it.
+Startup registration currently uses the current user's `Run` registry key. The UI exposes the current startup preference and allows changing it.
 
 ## Single Instance
 
-Single-instance logic should run early in app startup before showing UI or attaching device services.
-
-When a second instance starts, the existing instance should be activated if practical. If activation is not implemented in the first slice, the second instance should exit cleanly.
+Single-instance logic runs early in app startup before attaching device services. A second instance exits cleanly.
 
 ## Known Technical Risks
 
-- WinUI 3 build support depends on Windows App SDK tooling and packages being available in the local environment.
-- The exact Litra Glow HID protocol must be verified before real device control can be considered complete.
-- Tray behavior and startup registration may differ between packaged and unpackaged deployment.
+- Physical Litra Glow behavior should be verified after HID protocol changes.
+- Tray behavior and startup registration may differ if the app later moves to an installer or packaged deployment model.
+- The WPF settings window is intentionally basic and expected to be refined in a later task.
