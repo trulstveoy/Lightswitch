@@ -15,6 +15,7 @@ TestResults/
 *.trx
 coverage/
 coverage.cobertura.xml
+artifacts/
 
 # NuGet
 *.nupkg

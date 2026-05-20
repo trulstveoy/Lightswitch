@@ -40,6 +40,27 @@ dotnet build .\src\Lightswitch.Wpf\Lightswitch.Wpf.csproj -c Debug
 dotnet test .\tests\Lightswitch.Core.Tests\Lightswitch.Core.Tests.csproj -c Debug
 ```
 
+## Package
+
+Create a local Windows x64 ZIP package from PowerShell in the repository root.
+
+```powershell
+.\scripts\publish-zip.ps1 -Version local
+```
+
+The ZIP is written to `artifacts\Lightswitch-local-win-x64.zip`.
+
+## Release
+
+GitHub creates a publish ZIP only when a tag matching `v*` is pushed. Ordinary pushes to `main` do not create release packages.
+
+```powershell
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The GitHub release workflow builds and tests the app, publishes `src\Lightswitch.Wpf`, creates `Lightswitch-v0.1.0-win-x64.zip`, uploads it as a workflow artifact, and attaches it to the tag's GitHub Release.
+
 ## Current State
 
 The app runs tray-first with a WPF switch-style popup inspired by the physical light switch mockup. The settings window remains available from the tray context menu.

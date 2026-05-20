@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-zip:
+    name: Publish Windows ZIP
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build
+        shell: pwsh
+        run: dotnet build .\Lightswitch.sln -c Release
+
+      - name: Test Core
+        shell: pwsh
+        run: dotnet test .\tests\Lightswitch.Core.Tests\Lightswitch.Core.Tests.csproj -c Release --no-build
+
+      - name: Test Device
+        shell: pwsh
+        run: dotnet test .\tests\Lightswitch.Device.Tests\Lightswitch.Device.Tests.csproj -c Release --no-build
+
+      - name: Publish ZIP
+        id: package
+        shell: pwsh
+        run: |
+          $tag = '${{ github.ref_name }}'
+          .\scripts\publish-zip.ps1 -Configuration Release -Runtime win-x64 -Version $tag
+          $zipPath = "artifacts\Lightswitch-$tag-win-x64.zip"
+          "zip_path=$zipPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lightswitch-${{ github.ref_name }}-win-x64
+          path: ${{ steps.package.outputs.zip_path }}
+          if-no-files-found: error
+
+      - name: Create or update GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = '${{ github.ref_name }}'
+          $zipPath = "${{ steps.package.outputs.zip_path }}"
+          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $zipPath --repo $env:GITHUB_REPOSITORY --clobber
+          }
+          else {
+            gh release create $tag $zipPath --repo $env:GITHUB_REPOSITORY --title "Lightswitch $tag" --notes "Windows x64 ZIP package for Lightswitch."
+          }
