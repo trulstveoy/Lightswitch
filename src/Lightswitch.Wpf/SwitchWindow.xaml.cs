@@ -12,15 +12,18 @@ public partial class SwitchWindow : Window
 {
     private static readonly Duration ToggleDuration = new(TimeSpan.FromMilliseconds(180));
     private readonly MainViewModel _viewModel;
+    private readonly Action _showSettings;
+    private readonly Action _exit;
     private bool _allowClose;
 
-    public SwitchWindow(MainViewModel viewModel)
+    public SwitchWindow(MainViewModel viewModel, Action showSettings, Action exit)
     {
         _viewModel = viewModel;
+        _showSettings = showSettings;
+        _exit = exit;
         InitializeComponent();
         DataContext = viewModel;
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;
-        Deactivated += OnDeactivated;
         ApplyState(animate: false);
     }
 
@@ -41,7 +44,6 @@ public partial class SwitchWindow : Window
     {
         if (_allowClose)
         {
-            Deactivated -= OnDeactivated;
             _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
             base.OnClosing(e);
             return;
@@ -50,8 +52,6 @@ public partial class SwitchWindow : Window
         e.Cancel = true;
         Hide();
     }
-
-    private void OnDeactivated(object? sender, EventArgs e) => Hide();
 
     private void Root_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
@@ -75,6 +75,42 @@ public partial class SwitchWindow : Window
         e.Handled = true;
         _viewModel.TogglePowerCommand.Execute(null);
     }
+
+    private void SwitchContextMenu_Opened(object sender, RoutedEventArgs e) =>
+        StartWithWindowsMenuItem.IsChecked = _viewModel.StartWithWindows;
+
+    private void TogglePowerMenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.TogglePowerCommand.Execute(null);
+
+    private void Brightness25MenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.SetBrightnessCommand.Execute(25);
+
+    private void Brightness50MenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.SetBrightnessCommand.Execute(50);
+
+    private void Brightness75MenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.SetBrightnessCommand.Execute(75);
+
+    private void Brightness100MenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.SetBrightnessCommand.Execute(100);
+
+    private void WarmTemperatureMenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.SetTemperatureCommand.Execute(3000);
+
+    private void NeutralTemperatureMenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.SetTemperatureCommand.Execute(4000);
+
+    private void CoolTemperatureMenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.SetTemperatureCommand.Execute(5600);
+
+    private void StartWithWindowsMenuItem_Click(object sender, RoutedEventArgs e) =>
+        _viewModel.StartWithWindows = StartWithWindowsMenuItem.IsChecked;
+
+    private void SettingsMenuItem_Click(object sender, RoutedEventArgs e) =>
+        _showSettings();
+
+    private void ExitMenuItem_Click(object sender, RoutedEventArgs e) =>
+        _exit();
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {

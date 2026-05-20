@@ -78,7 +78,7 @@ public sealed class TrayAppController : IDisposable
     {
         var menu = new Forms.ContextMenuStrip();
 
-        menu.Items.Add("Skru av/pa", null, (_, _) => RunOnUi(() => _viewModel.TogglePowerCommand.Execute(null)));
+        menu.Items.Add("Skru av/på", null, (_, _) => RunOnUi(() => _viewModel.TogglePowerCommand.Execute(null)));
 
         var brightness = new Forms.ToolStripMenuItem("Brightness");
         brightness.DropDownItems.Add("25%", null, (_, _) => RunOnUi(() => _viewModel.SetBrightnessCommand.Execute(25)));
@@ -112,7 +112,7 @@ public sealed class TrayAppController : IDisposable
 
     private void ShowSwitchWindow()
     {
-        _switchWindow ??= new SwitchWindow(_viewModel);
+        _switchWindow ??= new SwitchWindow(_viewModel, ShowSettingsWindow, _exit);
         PositionSwitchWindow(_switchWindow);
         _switchWindow.ShowPopup();
     }

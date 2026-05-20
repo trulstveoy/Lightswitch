@@ -16,6 +16,43 @@
           Height="200"
           MouseLeftButtonDown="Root_MouseLeftButtonDown"
           SnapsToDevicePixels="True">
+        <Grid.ContextMenu>
+            <ContextMenu Opened="SwitchContextMenu_Opened">
+                <MenuItem Header="Skru av/på"
+                          Click="TogglePowerMenuItem_Click" />
+
+                <MenuItem Header="Brightness">
+                    <MenuItem Header="25%"
+                              Click="Brightness25MenuItem_Click" />
+                    <MenuItem Header="50%"
+                              Click="Brightness50MenuItem_Click" />
+                    <MenuItem Header="75%"
+                              Click="Brightness75MenuItem_Click" />
+                    <MenuItem Header="100%"
+                              Click="Brightness100MenuItem_Click" />
+                </MenuItem>
+
+                <MenuItem Header="Color temperature">
+                    <MenuItem Header="Warm"
+                              Click="WarmTemperatureMenuItem_Click" />
+                    <MenuItem Header="Neutral"
+                              Click="NeutralTemperatureMenuItem_Click" />
+                    <MenuItem Header="Cool"
+                              Click="CoolTemperatureMenuItem_Click" />
+                </MenuItem>
+
+                <Separator />
+                <MenuItem x:Name="StartWithWindowsMenuItem"
+                          Header="Start with Windows"
+                          IsCheckable="True"
+                          Click="StartWithWindowsMenuItem_Click" />
+                <MenuItem Header="Innstillinger"
+                          Click="SettingsMenuItem_Click" />
+                <Separator />
+                <MenuItem Header="Avslutt"
+                          Click="ExitMenuItem_Click" />
+            </ContextMenu>
+        </Grid.ContextMenu>
         <Border x:Name="Wall"
                 Width="160"
                 Height="200"
